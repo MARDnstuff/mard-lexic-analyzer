@@ -20,7 +20,7 @@ bool ContieneEdo(std::vector<Estado> Edo,int EdoDestino){
 }
 
 //Regresa el estado por ID, que se encuentra dentro del vector
-Estado DameEdo_byID (std::vector<Estado> Edo,int EdoID){
+Estado getStateById (std::vector<Estado> Edo,int EdoID){
     int tam = (int) Edo.size();
     for(int i=0; i<tam;i++){
         if(Edo.at(i).get_IdEstado() == EdoID){
@@ -33,7 +33,7 @@ Estado DameEdo_byID (std::vector<Estado> Edo,int EdoID){
 }
 
 //Regresa el indice en donde se encuentra el estado dentro de un conjunto
-int DameIEdo_byID (std::vector<Estado> Edo,int EdoID){
+int getIndexStateById (std::vector<Estado> Edo,int EdoID){
     int tam = (int) Edo.size();
     for(int i=0; i<tam;i++){
         if(Edo.at(i).get_IdEstado() == EdoID){
@@ -427,7 +427,7 @@ std::vector<Estado> NFA:: computeEpsilonClosure(Estado state){
           if(aux.get_Trans().at(i).get_SimbInf() == EPSILON){
             if(!ContieneEdo(R,aux.get_Trans().at(i).get_EdoDestino())){
                     Estado p = Estado();
-                    p = DameEdo_byID(EdoNFA,aux.get_Trans().at(i).get_EdoDestino());
+                    p = getStateById(EdoNFA,aux.get_Trans().at(i).get_EdoDestino());
                     if(p.get_IdEstado() != -1){
                         S.push(p);
                     }
@@ -474,7 +474,7 @@ std::vector<Estado> NFA :: computeMove(std::vector<Estado> states,char symbol){
         tam_ = (int) t.size();
         for(int j=0; j<tam_;j++){
             if(t.at(j).get_SimbInf()== symbol){
-               aux = DameEdo_byID(EdoNFA,t.at(j).get_EdoDestino());
+               aux = getStateById(EdoNFA,t.at(j).get_EdoDestino());
                C.push_back(aux);
             }//if
         }//for
@@ -517,7 +517,7 @@ void NFA ::buildSpecialUnion(NFA automaton, int token, int globalCounter){
         }//for
     }//if
     EdoNFA = Unir_ConjEdos(EdoNFA,automaton.EdoNFA);
-    int iterador = DameIEdo_byID(EdoNFA,automaton.EdoAcept.at(0).get_IdEstado());
+    int iterador = getIndexStateById(EdoNFA,automaton.EdoAcept.at(0).get_IdEstado());
     EdoNFA.at(iterador).set_Token(token);
     EdoAcept.push_back(EdoNFA.at(iterador));
     Alfabeto = Unir_ConjAlf(Alfabeto,automaton.Alfabeto);
