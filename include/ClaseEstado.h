@@ -3,6 +3,8 @@
 #include <vector>
 #include "ClaseTransicion.h"
 
+// TODO: Update class documentation and translate to English
+
 class Estado{
     public:
         int ContadorIdEstado = 0; //contador para seguir la enumeracion secuencial
@@ -11,9 +13,9 @@ class Estado{
     private:
         //Identificador del estado
         int idEstado1;
-        //Verificador de Estado de aceptación
+        //Verificador de Estado de aceptaciï¿½n
         bool EdoAcept1;
-        //Token para estados de aceptación (número único)
+        //Token para estados de aceptaciï¿½n (nï¿½mero ï¿½nico)
         int Token1;
 
     public:
@@ -25,13 +27,13 @@ class Estado{
         int get_IdEstado();
         // Establece el id del estado
         void set_IdEstado(int id);
-        // Regresa el valor True si es un estado de aceptación
+        // Regresa el valor True si es un estado de aceptaciï¿½n
         bool is_EdoAcept();
-        // Establece el valor a True o False a un estado si es una estado de aceptación
+        // Establece el valor a True o False a un estado si es una estado de aceptaciï¿½n
         void set_EdoAcept(bool value);
         // Regresa el valor del Token unico
         int get_Token();
-        // Establece el valor del Token (valor único)
+        // Establece el valor del Token (valor ï¿½nico)
         void set_Token(int value);
         // Regresa el conjunto de Transiciones asociadas al estado
         std::vector<Transicion>  get_Trans (){
