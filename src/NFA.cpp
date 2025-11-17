@@ -8,7 +8,7 @@
 //---FUNCIONES AUXILIARES---
 
 //Verifica que el id del estado se encuentre en el vector
-bool ContieneEdo(std::vector<Estado> Edo,int EdoDestino){
+bool hasState(std::vector<Estado> Edo,int EdoDestino){
     int tam = (int) Edo.size();
 
     for(int i=0; i<tam; i++){
@@ -425,7 +425,7 @@ std::vector<Estado> NFA:: computeEpsilonClosure(Estado state){
         tam_t = (int) aux.get_Trans().size();
         for(int i=0; i<tam_t;i++){
           if(aux.get_Trans().at(i).get_SimbInf() == EPSILON){
-            if(!ContieneEdo(R,aux.get_Trans().at(i).get_EdoDestino())){
+            if(!hasState(R,aux.get_Trans().at(i).get_EdoDestino())){
                     Estado p = Estado();
                     p = getStateById(EdoNFA,aux.get_Trans().at(i).get_EdoDestino());
                     if(p.get_IdEstado() != -1){
