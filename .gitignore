@@ -1,1 +1,47 @@
-.vscode
+# --- Build directories ---
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+install_manifest.txt
+
+# --- Outputs ---
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.app
+
+# --- Logs ---
+*.log
+
+# --- macOS specific ---
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear from using macOS Finder
+.DS_Store
+.fseventsd
+.Spotlight-V100
+.Trashes
+
+# --- CMake metadata ---
+Testing/
+CTestTestfile.cmake
+CMakeScripts/
+
+
+# --- VSCode ---
+.vscode/
+.history/
+*.code-workspace
+
