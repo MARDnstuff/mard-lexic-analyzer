@@ -45,8 +45,8 @@ bool ER_NFA:: F(std::shared_ptr<NFA> f_ap){
                             simbolo2 = (L.Lexema[0] == '\\')?L.Lexema[1]: L.Lexema[0];
                             Token = L.yylex();
                             if(Token == 90){ //CORCHETE DERECHO
-                                *f_ap = f_ap->NFA_Basico(simbolo1,simbolo2,ContarEdo);
-                                ContarEdo = f_ap->Contador;
+                                *f_ap = f_ap->createBasic(simbolo1,simbolo2,ContarEdo);
+                                ContarEdo = f_ap->counter;
                                 return true;
                             }
 
@@ -58,8 +58,8 @@ bool ER_NFA:: F(std::shared_ptr<NFA> f_ap){
         }
         case 110: { //SIMBOLO
             simbolo1 = (L.Lexema[0] == '\\')?L.Lexema[1]: L.Lexema[0];
-            *f_ap = f_ap->NFA_Basico(simbolo1,simbolo1,ContarEdo);
-            ContarEdo = f_ap->Contador;
+            *f_ap = f_ap->createBasic(simbolo1,simbolo1,ContarEdo);
+            ContarEdo = f_ap->counter;
             return true;
             break;
         }
@@ -72,8 +72,8 @@ bool ER_NFA :: Cp(std::shared_ptr<NFA> f_ap){
     Token = L.yylex();
     switch(Token){
         case 30: { //CERRADURA POSITIVA
-            *f_ap = f_ap->NFA_CerrPOS();
-            ContarEdo = f_ap->Contador;
+            *f_ap = f_ap->applyPositiveClosure();
+            ContarEdo = f_ap->counter;
             if(Cp(f_ap)){
                 return true;
             }//if
@@ -81,8 +81,8 @@ bool ER_NFA :: Cp(std::shared_ptr<NFA> f_ap){
             break;
         }
         case 40:{ //CERRADURA DE KLEEN
-            *f_ap = f_ap->NFA_CerrKleene();
-            ContarEdo = f_ap->Contador;
+            *f_ap = f_ap->applyKleeneClosure();
+            ContarEdo = f_ap->counter;
             if(Cp(f_ap)){
                 return true;
             }//if
@@ -90,8 +90,8 @@ bool ER_NFA :: Cp(std::shared_ptr<NFA> f_ap){
             break;
         }
         case 50:{ // OPCIONAL
-            *f_ap = f_ap->NFA_Opcional();
-            ContarEdo = f_ap->Contador;
+            *f_ap = f_ap->makeOptional();
+            ContarEdo = f_ap->counter;
             if(Cp(f_ap)){
                 return true;
             }//if
@@ -120,8 +120,8 @@ bool ER_NFA :: Tp(std::shared_ptr<NFA> f_ap){
     Token = L.yylex();
     if(Token == 20){//CONCATENACION
         if(C(f2_ap)){
-            *f_ap = f_ap->NFA_Conca(*f2_ap);
-            ContarEdo = f_ap->Contador;
+            *f_ap = f_ap->makeConcat(*f2_ap);
+            ContarEdo = f_ap->counter;
             if(Tp(f_ap)){
                 return true;
             }//if
@@ -149,8 +149,8 @@ bool ER_NFA:: Ep(std::shared_ptr<NFA> f_ap){
     Token = L.yylex();
     if(Token == 10){ //OR
         if(T(f2_ap)){
-            *f_ap =f_ap->NFA_Union(*f2_ap);
-            ContarEdo = f_ap->Contador;
+            *f_ap =f_ap->makeUnion(*f2_ap);
+            ContarEdo = f_ap->counter;
             if(Ep(f_ap)){
                 return true;
             }//if

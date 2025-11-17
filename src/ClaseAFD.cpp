@@ -142,7 +142,7 @@ AFD AFD :: Conv_NFAaAFD (NFA automata){
     //1) Cerradura epsilon del Estado inicial
     ConIj Sj = ConIj();
     Sj.set_ConIj_ID(0);
-    Sj.set_ConIJ_Edos(automata.CerraduraEpsilon(DameEdo_byID_AFD(automata.EdoNFA,automata.EdoIni)));
+    Sj.set_ConIJ_Edos(automata.computeEpsilonClosure(DameEdo_byID_AFD(automata.EdoNFA,automata.EdoIni)));
     //2) A�adimos S0 al conjunto sin analizar y al conjunto para analizar
     Si.push_back(Sj);
     Nuevo_Si.push(Sj);
@@ -161,7 +161,7 @@ AFD AFD :: Conv_NFAaAFD (NFA automata){
                 if(automata.Alfabeto.at(i) == EPSILON){
                     continue;
                 }
-            temp = automata.Ir_A(aux.get_ConIj_Edos(),automata.Alfabeto.at(i));
+            temp = automata.computeGoto(aux.get_ConIj_Edos(),automata.Alfabeto.at(i));
             if(temp.empty()){continue;}
             //Caso en el que sea un nuevo Conjunto
             int IDdestino = aux.equals_to(Si,temp);

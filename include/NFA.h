@@ -144,7 +144,7 @@ class NFA{
          * @brief Displays the NFA's adjacency matrix
          * @param automaton The NFA whose adjacency matrix is to be displayed
          */
-        void showAdjacencyMatrix(NFA automata);
+        void showAdjacencyMatrix(NFA automaton);
 
         /**
          * @brief Destructor for the NFA class

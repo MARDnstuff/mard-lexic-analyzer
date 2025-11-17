@@ -3,7 +3,7 @@
 #include "ClaseTransicion.h"
 
 
-// TODO: Update the implementations based on the udpated method names in the header file
+// TODO: Add a better logging mechanism instead of using std::cout for debugging
 
 //---FUNCIONES AUXILIARES---
 
@@ -91,41 +91,41 @@ NFA::NFA(){
 }
 
 //Crea un NFA basico para un simbolo
-NFA NFA :: createBasic (char simb, int Cont){
+NFA NFA ::createBasic(char symbol, int initialCounter){
     NFA temp = NFA();
-    int Origen=Cont,Destino = Cont+1;
+    int Origen=initialCounter,Destino = initialCounter+1;
     Estado e1, e2;
     e1 = Estado();
     e1.set_IdEstado(Origen);
     e2 = Estado();
     e2.set_IdEstado(Destino);
 
-    Transicion t = Transicion(simb,Origen,Destino);
+    Transicion t = Transicion(symbol,Origen,Destino);
     Transicion t2 = Transicion();
-    Contador=Destino+1;
+    counter=Destino+1;
     e1.set_Trans(t);
     e2.set_EdoAcept(true);
     e2.set_Trans(t2);
-    temp.Alfabeto.push_back(simb);
+    temp.Alfabeto.push_back(symbol);
     temp.EdoIni = e1.get_IdEstado();
     temp.EdoNFA.push_back(e1);
     temp.EdoNFA.push_back(e2);
     temp.EdoAcept.push_back(e2);
-    temp.Contador = Destino+1;
+    temp.counter = Destino+1;
     SeAgregoNFAUnionLexico = false; //sin informaci�n por el momento
     return temp;
 }
 
 //Crea un NFA Basico para un rango de caracteres
-NFA NFA :: NFA_Basico (char simb1,char simb2,int Cont){
+NFA NFA ::createBasic(char firstSymbol, char lastSymbol, int initialCounter){
     NFA temp = NFA();
-    int Origen=Cont,Destino = Cont+1;
+    int Origen=initialCounter,Destino = initialCounter+1;
     Estado e1, e2;
     e1 = Estado();
     e1.set_IdEstado(Origen);
     e2 = Estado();
     e2.set_IdEstado(Destino);
-    int s1 = (int) simb1,s2 = (int) simb2;
+    int s1 = (int) firstSymbol,s2 = (int) lastSymbol;
     while(s1<=s2 ){
         char s = (char) s1;
         Transicion t = Transicion(s,Origen,Destino);
@@ -135,9 +135,9 @@ NFA NFA :: NFA_Basico (char simb1,char simb2,int Cont){
         s1++;
     }//for
 
-    Contador=Destino+1;
+    counter=Destino+1;
     e2.set_EdoAcept(true);
-    int m = simb1,n = simb2;
+    int m = firstSymbol,n = lastSymbol;
     while(m<=n){
         char s = m;
         temp.Alfabeto.push_back(s);
@@ -148,19 +148,18 @@ NFA NFA :: NFA_Basico (char simb1,char simb2,int Cont){
     temp.EdoNFA.push_back(e1);
     temp.EdoNFA.push_back(e2);
     temp.EdoAcept.push_back(e2);
-    temp.Contador = Destino+1;
+    temp.counter = Destino+1;
     SeAgregoNFAUnionLexico = false; //sin informaci�n por el momento
     return temp;
-
 }
 
 //Union de dos NFA
-NFA NFA :: NFA_Union (NFA automata){
+NFA NFA :: makeUnion (NFA automaton){
     int Origen;
-    if(automata.get_Contador() > Contador){
-        Origen = automata.get_Contador();
+    if(automaton.getCounter() > counter){
+        Origen = automaton.getCounter();
     }else{
-        Origen= Contador;
+        Origen= counter;
     }
     int Destino=Origen+1;
     Estado e1,e2;
@@ -170,7 +169,7 @@ NFA NFA :: NFA_Union (NFA automata){
     e2.set_IdEstado(Destino);
     //Estas transiciones le pertencen a e1
     Transicion t1 = Transicion(EPSILON,Origen,EdoIni);
-    Transicion t2 = Transicion(EPSILON,Origen,automata.EdoIni);
+    Transicion t2 = Transicion(EPSILON,Origen,automaton.EdoIni);
     e1.set_Trans(t1);
     e1.set_Trans(t2);
 
@@ -184,35 +183,35 @@ NFA NFA :: NFA_Union (NFA automata){
 
     }//for
 
-    int tam2 =(int) automata.EdoNFA.size();
+    int tam2 =(int) automaton.EdoNFA.size();
     for(int i=0;i<tam2;i++){
-        if(automata.EdoNFA.at(i).is_EdoAcept()){
-            Transicion t_ = Transicion(EPSILON,automata.EdoNFA.at(i).get_IdEstado(),e2.get_IdEstado());
-            automata.EdoNFA.at(i).set_EdoAcept(false);
-            automata.EdoNFA.at(i).set_Trans(t_);
+        if(automaton.EdoNFA.at(i).is_EdoAcept()){
+            Transicion t_ = Transicion(EPSILON,automaton.EdoNFA.at(i).get_IdEstado(),e2.get_IdEstado());
+            automaton.EdoNFA.at(i).set_EdoAcept(false);
+            automaton.EdoNFA.at(i).set_Trans(t_);
         }//if
 
     }//for
-Contador=Destino+1;
-    //actulizamos informacion para el automata resultante
+    counter=Destino+1;
+    //actulizamos informacion para el automaton resultante
     EdoAcept.clear();
-    automata.EdoAcept.clear();
+    automaton.EdoAcept.clear();
     EdoIni = e1.get_IdEstado();
     e2.set_EdoAcept(true);
     EdoAcept.push_back(e2);
 
 
-    //Union de los estados de los dos automatas
-    int n = (int) automata.EdoNFA.size();
+    //Union de los estados de los dos automatons
+    int n = (int) automaton.EdoNFA.size();
         for (int i=0;i<n;i++){
-            EdoNFA.push_back(automata.EdoNFA.at(i));
+            EdoNFA.push_back(automaton.EdoNFA.at(i));
             //Transicion m = Transicion();
         }//for
-    //Unions de los alfabetos de los automatas
-    int p = (int) automata.Alfabeto.size();
+    //Unions de los alfabetos de los automatons
+    int p = (int) automaton.Alfabeto.size();
     for(int i=0;i<p;i++){
-        if(!ContieneSimb(Alfabeto,automata.Alfabeto.at(i))){
-            Alfabeto.push_back(automata.Alfabeto.at(i));
+        if(!ContieneSimb(Alfabeto,automaton.Alfabeto.at(i))){
+            Alfabeto.push_back(automaton.Alfabeto.at(i));
         }
     }//for
 
@@ -225,17 +224,17 @@ Contador=Destino+1;
 }
 
 //Concatenaci�n de  dos NFA
-NFA NFA :: NFA_Conca (NFA automata){
+NFA NFA :: makeConcat (NFA automaton){
     std::vector<Transicion> t1;
     std::vector<Transicion> t2;
-    int nuevoID = automata.EdoIni, viejoID = EdoAcept.at(0).get_IdEstado();
+    int nuevoID = automaton.EdoIni, viejoID = EdoAcept.at(0).get_IdEstado();
     int p = (int) EdoNFA.size(),cn;
 
-   int n = (int) automata.EdoNFA.size();
+   int n = (int) automaton.EdoNFA.size();
     for(int i=0;i<n;i++){
-        if(automata.EdoNFA.at(i).get_IdEstado() == automata.EdoIni){
-            t1 = automata.EdoNFA.at(i).get_Trans();
-            automata.EdoNFA.erase(automata.EdoNFA.begin()+i);
+        if(automaton.EdoNFA.at(i).get_IdEstado() == automaton.EdoIni){
+            t1 = automaton.EdoNFA.at(i).get_Trans();
+            automaton.EdoNFA.erase(automaton.EdoNFA.begin()+i);
             break;
         }//if
     }//for
@@ -253,11 +252,11 @@ NFA NFA :: NFA_Conca (NFA automata){
     }//for
 
     EdoAcept.clear();
-    EdoAcept.push_back(automata.EdoAcept.at(0));
+    EdoAcept.push_back(automaton.EdoAcept.at(0));
 
-    int lim = (int) automata.EdoNFA.size();
+    int lim = (int) automaton.EdoNFA.size();
     for(int i=0;i<lim;i++){
-        EdoNFA.push_back(automata.EdoNFA.at(i));
+        EdoNFA.push_back(automaton.EdoNFA.at(i));
     }//for
 
     int llim = (int) EdoNFA.size();
@@ -272,15 +271,15 @@ NFA NFA :: NFA_Conca (NFA automata){
     }//for
 
     //Union de los alfabetos
-     p = (int) automata.Alfabeto.size();
+     p = (int) automaton.Alfabeto.size();
     for(int i=0;i<p;i++){
-        if(!ContieneSimb(Alfabeto,automata.Alfabeto.at(i))){
-            Alfabeto.push_back(automata.Alfabeto.at(i));
+        if(!ContieneSimb(Alfabeto,automaton.Alfabeto.at(i))){
+            Alfabeto.push_back(automaton.Alfabeto.at(i));
         }
     }//for
 
-    if(automata.get_Contador() > Contador){
-        Contador=automata.Contador;
+    if(automaton.getCounter() > counter){
+        counter=automaton.counter;
     }
 
     return *this;
@@ -288,8 +287,8 @@ NFA NFA :: NFA_Conca (NFA automata){
 }
 
 //Cerradura positiva de un NFA
-NFA NFA ::NFA_CerrPOS(){
-    int Origen=Contador,Destino=Origen + 1;
+NFA NFA :: applyPositiveClosure(){
+    int Origen=counter,Destino=Origen + 1;
     Estado e1,e2;
     e1 = Estado();//nuevo estado inicial
     e1.set_IdEstado(Origen);
@@ -319,7 +318,7 @@ NFA NFA ::NFA_CerrPOS(){
     EdoIni = e1.get_IdEstado();
     EdoNFA.push_back(e1);
     EdoNFA.push_back(e2);
-    Contador=Destino + 1;
+    counter=Destino + 1;
     if(!ContieneSimb(Alfabeto,EPSILON)){
         Alfabeto.push_back(EPSILON);
     }
@@ -329,8 +328,8 @@ NFA NFA ::NFA_CerrPOS(){
 }
 
 //Cerradura de Kleene
-NFA NFA :: NFA_CerrKleene(){
-    int Origen=Contador,Destino=Origen + 1;
+NFA NFA :: applyKleeneClosure(){
+    int Origen=counter,Destino=Origen + 1;
     Estado e1,e2;
     e1 = Estado();//nuevo estado inicial
     e1.set_IdEstado(Origen);
@@ -362,7 +361,7 @@ NFA NFA :: NFA_CerrKleene(){
     EdoIni = e1.get_IdEstado();
     EdoNFA.push_back(e1);
     EdoNFA.push_back(e2);
-    Contador=Destino + 1;
+    counter=Destino + 1;
     if(!ContieneSimb(Alfabeto,EPSILON)){
         Alfabeto.push_back(EPSILON);
     }
@@ -370,8 +369,8 @@ NFA NFA :: NFA_CerrKleene(){
 }
 
 //Operacion opcional (?)
-NFA NFA :: NFA_Opcional(){
-    int Origen=Contador,Destino=Origen + 1;
+NFA NFA :: makeOptional(){
+    int Origen=counter,Destino=Origen + 1;
     Estado e1,e2;
     e1 = Estado();//nuevo estado inicial
     e1.set_IdEstado(Origen);
@@ -401,7 +400,7 @@ NFA NFA :: NFA_Opcional(){
     EdoIni = e1.get_IdEstado();
     EdoNFA.push_back(e1);
     EdoNFA.push_back(e2);
-    Contador=Destino + 1;
+    counter=Destino + 1;
 
     if(!ContieneSimb(Alfabeto,EPSILON)){
         Alfabeto.push_back(EPSILON);
@@ -411,12 +410,12 @@ NFA NFA :: NFA_Opcional(){
 }
 
  //Regresa el conjunto de estados que son accesible desde "e" con EPSILON
-std::vector<Estado> NFA:: CerraduraEpsilon(Estado e){
+std::vector<Estado> NFA:: computeEpsilonClosure(Estado state){
     std::vector<Estado> R;
     std::stack<Estado> S;
 
     Estado aux, Edo;
-    S.push(e);
+    S.push(state);
     int tam = (int) S.size(), tam_t;
 
     while(tam != 0){
@@ -444,17 +443,17 @@ std::vector<Estado> NFA:: CerraduraEpsilon(Estado e){
 
 //Regresa el conjunto de estados que son accesibles desde cada uno
 //de los estados e que estan en el vector con EPSILON
-std::vector<Estado> NFA :: CerraduraEpsilon(std::vector<Estado> ConjEdos){
-    int tam = (int) ConjEdos.size(),tam_;
+std::vector<Estado> NFA :: computeEpsilonClosure(std::vector<Estado> states){
+    int tam = (int) states.size(),tam_;
     std::vector<Estado> temp;
     std::vector<Estado> temp2;
     std::vector<Estado> Cerradura;
     temp.clear();
 
     for(int i=0;i<tam;i++){
-        tam_ = (int) CerraduraEpsilon(ConjEdos.at(i)).size();
+        tam_ = (int) computeEpsilonClosure(states.at(i)).size();
         for(int j=0; j<tam_; j++){
-            Cerradura.push_back(CerraduraEpsilon(ConjEdos.at(i)).at(j));
+            Cerradura.push_back(computeEpsilonClosure(states.at(i)).at(j));
         }//for
     }//for
 
@@ -462,46 +461,45 @@ std::vector<Estado> NFA :: CerraduraEpsilon(std::vector<Estado> ConjEdos){
 }
 
 //Regresa el cnjunto de estado a los que me puedo mover con el simbolo
-std::vector<Estado> NFA :: Mover(std::vector<Estado> Edos,char simb){
+std::vector<Estado> NFA :: computeMove(std::vector<Estado> states,char symbol){
     std::vector<Estado> C;
     std::vector<Transicion> t;
     Estado aux;
     C.clear();
     t.clear();
 
-    int tam = (int) Edos.size(),tam_;
+    int tam = (int) states.size(),tam_;
     for(int i=0; i<tam;i++){
-        t = Edos.at(i).get_Trans();
+        t = states.at(i).get_Trans();
         tam_ = (int) t.size();
         for(int j=0; j<tam_;j++){
-            if(t.at(j).get_SimbInf()== simb){
+            if(t.at(j).get_SimbInf()== symbol){
                aux = DameEdo_byID(EdoNFA,t.at(j).get_EdoDestino());
                C.push_back(aux);
             }//if
         }//for
     }//for
     return C;
-
 }
 
 //Regresa el conjunto de estados obtenidos de la cerradura epsilon del conjunto de estados
 //accesibles con un simbolo
-std::vector<Estado> NFA :: Ir_A(std::vector<Estado> Edos,char simb){
+std::vector<Estado> NFA :: computeGoto(std::vector<Estado> states,char symbol){
      std::vector<Estado> C;
      C.clear();
-     C = CerraduraEpsilon(Mover(Edos,simb));
+     C = computeEpsilonClosure(computeMove(states,symbol));
      return C;
 }
 
 //Construye la union especial para los NFA, los va agregando uno a uno a this
 //Se pretende que this sea nuevo
-void NFA :: NFA_UnionEspecial (NFA f, int Token,int ContadorGlobal){
+void NFA ::buildSpecialUnion(NFA automaton, int token, int globalCounter){
     Estado e;
 
     if(!SeAgregoNFAUnionLexico){
         e = Estado();
-        e.set_IdEstado(ContadorGlobal);
-        Transicion t = Transicion(EPSILON,ContadorGlobal,f.EdoIni);
+        e.set_IdEstado(globalCounter);
+        Transicion t = Transicion(EPSILON,globalCounter,automaton.EdoIni);
         EdoNFA.clear();
         Alfabeto.clear();
         e.set_Trans(t);
@@ -510,7 +508,7 @@ void NFA :: NFA_UnionEspecial (NFA f, int Token,int ContadorGlobal){
         SeAgregoNFAUnionLexico = true;
 
     }else{
-        Transicion t = Transicion(EPSILON,EdoIni,f.EdoIni);
+        Transicion t = Transicion(EPSILON,EdoIni,automaton.EdoIni);
         int tam = (int) EdoNFA.size();
         for(int i=0; i<tam;i++){
             if(EdoNFA.at(i).get_IdEstado() == EdoIni){
@@ -518,35 +516,33 @@ void NFA :: NFA_UnionEspecial (NFA f, int Token,int ContadorGlobal){
             }
         }//for
     }//if
-    EdoNFA = Unir_ConjEdos(EdoNFA,f.EdoNFA);
-    int iterador = DameIEdo_byID(EdoNFA,f.EdoAcept.at(0).get_IdEstado());
-    EdoNFA.at(iterador).set_Token(Token);
+    EdoNFA = Unir_ConjEdos(EdoNFA,automaton.EdoNFA);
+    int iterador = DameIEdo_byID(EdoNFA,automaton.EdoAcept.at(0).get_IdEstado());
+    EdoNFA.at(iterador).set_Token(token);
     EdoAcept.push_back(EdoNFA.at(iterador));
-    Alfabeto = Unir_ConjAlf(Alfabeto,f.Alfabeto);
+    Alfabeto = Unir_ConjAlf(Alfabeto,automaton.Alfabeto);
     return;
-
 }
 
-
 //Muestra la matriz de adyacencia del NFA
-void NFA :: Mx_Adyacencia(NFA automata){
-int tam = (int) automata.EdoNFA.size();
+void NFA :: showAdjacencyMatrix (NFA automaton){
+int tam = (int) automaton.EdoNFA.size();
 
 
     for(int i=0; i< tam ; i++){
-        std::cout<<"ESTADO --> Q"<<automata.EdoNFA.at(i).get_IdEstado()<<"\n";
-        int alf = (int) automata.EdoNFA.at(i).get_Trans().size();
-        if(automata.EdoNFA.at(i).get_Trans().empty()){
+        std::cout<<"ESTADO --> Q"<<automaton.EdoNFA.at(i).get_IdEstado()<<"\n";
+        int alf = (int) automaton.EdoNFA.at(i).get_Trans().size();
+        if(automaton.EdoNFA.at(i).get_Trans().empty()){
             std::cout<<"SIN TRANCISION\n";
-            std::cout<<"Estado de aceptacion: "<<automata.EdoNFA.at(i).is_EdoAcept()<<"\n";
-            std::cout<<"Token: "<<automata.EdoNFA.at(i).get_Token()<<"\n";
+            std::cout<<"Estado de aceptacion: "<<automaton.EdoNFA.at(i).is_EdoAcept()<<"\n";
+            std::cout<<"Token: "<<automaton.EdoNFA.at(i).get_Token()<<"\n";
         }else{
             for(int j=0; j<alf;j++){
                 std::cout<<"TRANSICIONES\n";
-                std::cout<<"De Q"<<automata.EdoNFA[i].get_IdEstado()<<" --> Q"<<automata.EdoNFA[i].get_Trans().at(j).get_EdoDestino()<<"\n";
-                std::cout<<"Caracter necesario: "<<automata.EdoNFA.at(i).get_Trans().at(j).get_SimbInf()<<"\n";
-                std::cout<<"Estado de aceptacion: "<<automata.EdoNFA.at(i).is_EdoAcept()<<"\n";
-                std::cout<<"Token: "<<automata.EdoNFA.at(i).get_Token()<<"\n";
+                std::cout<<"De Q"<<automaton.EdoNFA[i].get_IdEstado()<<" --> Q"<<automaton.EdoNFA[i].get_Trans().at(j).get_EdoDestino()<<"\n";
+                std::cout<<"Caracter necesario: "<<automaton.EdoNFA.at(i).get_Trans().at(j).get_SimbInf()<<"\n";
+                std::cout<<"Estado de aceptacion: "<<automaton.EdoNFA.at(i).is_EdoAcept()<<"\n";
+                std::cout<<"Token: "<<automaton.EdoNFA.at(i).get_Token()<<"\n";
             }//for
         }//if
         std::cout<<"////////////////////////////////\n";
@@ -555,9 +551,9 @@ int tam = (int) automata.EdoNFA.size();
 
 
 
-//Regresa el contador del ultimo estado creado
-int NFA :: get_Contador (){
-    return Contador;
+//Regresa el counter del ultimo estado creado
+int NFA :: getCounter (){
+    return counter;
 }
 
 NFA::~NFA(){

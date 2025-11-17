@@ -18,7 +18,7 @@ classDiagram
     class NFA {
         +int Contador
         +vector<Estado> EdoNFA
-        +NFA_Basico(...)
+        +createBasic(...)
     }
     class ConIj {
         +vector<Transicion> Trans1

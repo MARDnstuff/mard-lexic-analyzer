@@ -137,11 +137,11 @@ void Ver_ConjAcept(vector<Estado> Conj)
 /*
 NFA automata = NFA();
 NFA a1;
-a1 = automata.NFA_Basico('a','c',0);
+a1 = automata.createBasic('a','c',0);
 
 NFA automata2 = NFA();
 NFA a2;
-a2 = automata2.NFA_Basico('d','f',a1.get_Contador());
+a2 = automata2.createBasic('d','f',a1.get_Contador());
 
 a1 = a1.NFA_Union(a2);
 a1 = a1.NFA_CerrKleene();
@@ -149,13 +149,13 @@ a1 = a1.NFA_CerrKleene();
 
 NFA automata3 = NFA();
 NFA a3;
-a3 = automata3.NFA_Basico('g','i',a1.get_Contador());
+a3 = automata3.createBasic('g','i',a1.get_Contador());
 
 a3 = a3.NFA_CerrPOS();
 
 NFA automata4 = NFA();
 NFA a4;
-a4 = automata4.NFA_Basico('w','y',a3.get_Contador());
+a4 = automata4.createBasic('w','y',a3.get_Contador());
 
 
 
@@ -185,38 +185,38 @@ f1.Carga_TablaAFD("pruebaAFD.txt");*/
 /*
 NFA automata = NFA();
 NFA a1;
-a1 = automata.NFA_Basico('+','+',0);
+a1 = automata.createBasic('+','+',0);
 
 NFA automata2 = NFA();
 NFA a2;
-a2 = automata2.NFA_Basico('-','-',a1.get_Contador());
+a2 = automata2.createBasic('-','-',a1.get_Contador());
 
 NFA automata3 = NFA();
 NFA a3;
-a3 = automata3.NFA_Basico('*','*',a2.get_Contador());
+a3 = automata3.createBasic('*','*',a2.get_Contador());
 
 NFA automata4 = NFA();
 NFA a4;
-a4 = automata4.NFA_Basico('/','/',a3.get_Contador());
+a4 = automata4.createBasic('/','/',a3.get_Contador());
 
 NFA automata5 = NFA();
 NFA a5;
-a5 = automata5.NFA_Basico('(','(',a4.get_Contador());
+a5 = automata5.createBasic('(','(',a4.get_Contador());
 
 NFA automata6 = NFA();
 NFA a6;
-a6 = automata6.NFA_Basico(')',')',a5.get_Contador());
+a6 = automata6.createBasic(')',')',a5.get_Contador());
 
 NFA automata7 = NFA();
 NFA a7;
-a7 = automata7.NFA_Basico('0','9',a6.get_Contador());
+a7 = automata7.createBasic('0','9',a6.get_Contador());
 a7 = a7.NFA_CerrPOS();
 
 
 
 NFA automata8 = NFA();
 NFA a8;
-a8 = automata8.NFA_Basico('.','.',a7.get_Contador());
+a8 = automata8.createBasic('.','.',a7.get_Contador());
 
 a7 = a7.NFA_Conca(a8);
 
@@ -224,14 +224,14 @@ a7 = a7.NFA_Conca(a8);
 
 NFA automata9 = NFA();
 NFA a9;
-a9 = automata9.NFA_Basico('0','9',a7.get_Contador());
+a9 = automata9.createBasic('0','9',a7.get_Contador());
 a9 = a9.NFA_CerrPOS();
 
 a7 = a7.NFA_Conca(a9);
 
 NFA automata10 = NFA();
 NFA a10;
-a10 = automata10.NFA_Basico('0','9',a7.get_Contador());
+a10 = automata10.createBasic('0','9',a7.get_Contador());
 a10 = a10.NFA_CerrPOS();
 a10 = a10.NFA_Union(a7);
 
@@ -254,58 +254,58 @@ nuevo.Guarda_TablaAFD("AFDAritmeticas");*/
 // OR
 /*NFA automata = NFA();
 NFA a1;
-a1 = automata.NFA_Basico('|','|',0);
+a1 = automata.createBasic('|','|',0);
 // CONC
 NFA automata2 = NFA();
 NFA a2;
-a2 = automata2.NFA_Basico('&','&',a1.Contador);
+a2 = automata2.createBasic('&','&',a1.Contador);
 // CERR_POS
 NFA automata3 = NFA();
 NFA a3;
-a3 = automata3.NFA_Basico('+','+',a2.Contador);
+a3 = automata3.createBasic('+','+',a2.Contador);
 // CERR_KLE
 NFA automata4 = NFA();
 NFA a4;
-a4 = automata.NFA_Basico('*','*',a3.Contador);
+a4 = automata.createBasic('*','*',a3.Contador);
 //OPC
 NFA automata5 = NFA();
 NFA a5;
-a5 = automata5.NFA_Basico('?','?',a4.Contador);
+a5 = automata5.createBasic('?','?',a4.Contador);
 //PAR_I
 NFA automata6 = NFA();
 NFA a6;
-a6 = automata6.NFA_Basico('(','(',a5.Contador);
+a6 = automata6.createBasic('(','(',a5.Contador);
 // PAR_D
 NFA automata7 = NFA();
 NFA a7;
-a7 = automata7.NFA_Basico(')',')',a6.Contador);
+a7 = automata7.createBasic(')',')',a6.Contador);
 //CORCH_I
 NFA automata8 = NFA();
 NFA a8;
-a8 = automata8.NFA_Basico('[','[',a7.Contador);
+a8 = automata8.createBasic('[','[',a7.Contador);
 //CORCH_D
 NFA automata9 = NFA();
 NFA a9;
-a9 = automata9.NFA_Basico(']',']',a8.Contador);
+a9 = automata9.createBasic(']',']',a8.Contador);
 //GUION
 NFA automata10 = NFA();
 NFA a10;
-a10 = automata10.NFA_Basico('-','-',a9.Contador);
+a10 = automata10.createBasic('-','-',a9.Contador);
 //SIMBOLO
 //--> [a - z]
 NFA automata11 = NFA();
 NFA a11;
-a11 = automata11.NFA_Basico('a','z',a10.Contador);
+a11 = automata11.createBasic('a','z',a10.Contador);
 
 //--> [A - Z]
 NFA automata12 = NFA();
 NFA a12;
-a12 = automata12.NFA_Basico('A','Z',a11.Contador);
+a12 = automata12.createBasic('A','Z',a11.Contador);
 
 // --> [0 - 9]
 NFA automata13 = NFA();
 NFA a13;
-a13 = automata13.NFA_Basico('0','9',a12.Contador);
+a13 = automata13.createBasic('0','9',a12.Contador);
 
 // --> [A - z] | [a - z] | [0 - 9]
 a13 = a13.NFA_Union(a11);
@@ -314,49 +314,49 @@ a13 = a13.NFA_Union(a12);
 // --> |
 NFA automata14 = NFA();
 NFA a14;
-a14 = automata14.NFA_Basico('|','|',a13.Contador);
+a14 = automata14.createBasic('|','|',a13.Contador);
 
 // --> &
 NFA automata15 = NFA();
 NFA a15;
-a15 = automata15.NFA_Basico('&','&',a14.Contador);
+a15 = automata15.createBasic('&','&',a14.Contador);
  // --> +
 NFA automata16 = NFA();
 NFA a16;
-a16 = automata16.NFA_Basico('+','+',a15.Contador);
+a16 = automata16.createBasic('+','+',a15.Contador);
 // --> *
 NFA automata17 = NFA();
 NFA a17;
-a17 = automata17.NFA_Basico('*','*',a16.Contador);
+a17 = automata17.createBasic('*','*',a16.Contador);
  // --> ?
 NFA automata18 = NFA();
 NFA a18;
-a18 = automata18.NFA_Basico('?','?',a17.Contador);
+a18 = automata18.createBasic('?','?',a17.Contador);
  // --> (
 NFA automata19 = NFA();
 NFA a19;
-a19 = automata19.NFA_Basico('(','(',a18.Contador);
+a19 = automata19.createBasic('(','(',a18.Contador);
  // --> )
 NFA automata20 = NFA();
 NFA a20;
-a20 = automata20.NFA_Basico(')',')',a19.Contador);
+a20 = automata20.createBasic(')',')',a19.Contador);
  // --> [
 NFA automata21 = NFA();
 NFA a21;
-a21 = automata21.NFA_Basico('[','[',a20.Contador);
+a21 = automata21.createBasic('[','[',a20.Contador);
  // --> ]
 NFA automata22 = NFA();
 NFA a22;
-a22 = automata22.NFA_Basico(']',']',a21.Contador);
+a22 = automata22.createBasic(']',']',a21.Contador);
  // --> -
 NFA automata23 = NFA();
 NFA a23;
-a23 = automata23.NFA_Basico('-','-',a22.Contador);
+a23 = automata23.createBasic('-','-',a22.Contador);
 
 // --> '\'
 NFA automata24 = NFA();
 NFA a24;
-a24 = automata24.NFA_Basico('\\','\\',a23.Contador);
+a24 = automata24.createBasic('\\','\\',a23.Contador);
 
 
 // --> Concatenacion de simbolos
@@ -374,7 +374,7 @@ a24 = a24.NFA_Union(a23);
     // --> '\'
 NFA automata25 = NFA();
 NFA a25;
-a25 = automata25.NFA_Basico('\\','\\',a24.Contador);
+a25 = automata25.createBasic('\\','\\',a24.Contador);
 a25 = a25.NFA_Conca(a24);
 
 // Completo
@@ -382,7 +382,7 @@ a13 = a13.NFA_Union(a25);
 // Diagonales invertidas
 NFA automata26 = NFA();
 NFA a26;
-a26 = automata26.NFA_Basico('\\','\\',a13.Contador);
+a26 = automata26.createBasic('\\','\\',a13.Contador);
 //Union especial
 NFA e =NFA();
 e.NFA_UnionEspecial(a1,10,a13.Contador);
@@ -418,40 +418,40 @@ if(e.IniConversion()){
 //Punto y coma (PC)
 NFA automata = NFA();
 NFA a1;
-a1 = automata.NFA_Basico(';',';',0);
+a1 = automata.createBasic(';',';',0);
 
 // FLECHA
 NFA automata2 = NFA();
 NFA a2;
-a2 = automata2.NFA_Basico('-','-',a1.Contador);
+a2 = automata2.createBasic('-','-',a1.Contador);
 
 NFA automata3 = NFA();
 NFA a3;
-a3 = automata3.NFA_Basico('>','>',a2.Contador);
+a3 = automata3.createBasic('>','>',a2.Contador);
 
 a2 = a2.NFA_Conca(a3);
 
 // OR
 NFA automata4 = NFA();
 NFA a4;
-a4 = automata4.NFA_Basico('|','|',a2.Contador);
+a4 = automata4.createBasic('|','|',a2.Contador);
 
 //SIMBOLO
 NFA automata5 = NFA();
 NFA a5;
-a5 = automata5.NFA_Basico('a','z',a4.Contador);
+a5 = automata5.createBasic('a','z',a4.Contador);
 
 NFA automata6 = NFA();
 NFA a6;
-a6 = automata6.NFA_Basico('A','Z',a5.Contador);
+a6 = automata6.createBasic('A','Z',a5.Contador);
 
 NFA automata7 = NFA();
 NFA a7;
-a7 = automata7.NFA_Basico('0','9',a6.Contador);
+a7 = automata7.createBasic('0','9',a6.Contador);
 
 NFA automata8 = NFA();
 NFA a8;
-a8 = automata8.NFA_Basico('_','_',a7.Contador);
+a8 = automata8.createBasic('_','_',a7.Contador);
 
 a8 = a8.NFA_Union(a5);
 a8 = a8.NFA_Union(a6);
@@ -460,11 +460,11 @@ a8 = a8.NFA_CerrKleene();
 
 NFA automata9 = NFA();
 NFA a9;
-a9 = automata9.NFA_Basico('a','z',a8.Contador);
+a9 = automata9.createBasic('a','z',a8.Contador);
 
 NFA automata10 = NFA();
 NFA a10;
-a10 = automata10.NFA_Basico('A','Z',a9.Contador);
+a10 = automata10.createBasic('A','Z',a9.Contador);
 
 a10 = a10.NFA_Union(a9);
 a10 = a10.NFA_Conca(a8);
@@ -472,7 +472,7 @@ a10 = a10.NFA_Conca(a8);
 
 NFA automata11 = NFA();
 NFA a11;
-a11 = automata10.NFA_Basico(' ',' ',a11.Contador);
+a11 = automata10.createBasic(' ',' ',a11.Contador);
 
 NFA e =NFA();
 e.NFA_UnionEspecial(a11,2001,a11.Contador);
