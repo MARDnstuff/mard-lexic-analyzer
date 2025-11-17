@@ -1,6 +1,8 @@
 #include "ClaseEstado.h"
 #include <vector>
 
+// TODO: Udpate names and add a better logging mechanism instead of using std::cout for debugging
+
  //Constructor de un estado
 Estado::Estado(){
     EdoAcept1 = false;
@@ -29,12 +31,12 @@ void Estado:: set_IdEstado(int id){
     return;
 }
 
-// Regresa el valor True si es un estado de aceptación
+// Regresa el valor True si es un estado de aceptaciï¿½n
 bool Estado:: is_EdoAcept(){
     return EdoAcept1;
 }
 
-// Establece el valor a True o False a un estado si es una estado de aceptación
+// Establece el valor a True o False a un estado si es una estado de aceptaciï¿½n
 void Estado:: set_EdoAcept(bool value){
     EdoAcept1 = value;
     return;
@@ -45,7 +47,7 @@ int Estado:: get_Token (){
     return Token1;
 }
 
-// Establece el valor del Token (valor único)
+// Establece el valor del Token (valor ï¿½nico)
 void Estado:: set_Token(int value){
     Token1 = value;
     return;
