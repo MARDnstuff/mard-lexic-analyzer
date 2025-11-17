@@ -66,18 +66,18 @@ AFD::AFD(){
     //ctor
 }
 //Regresa el conjunto de Estados del AFD
-std::vector<ConIj> AFD:: get_EdoAFN (){
+std::vector<ConIj> AFD:: get_EdoNFA (){
     return EdoAFD;
 }
 
 //Agrega una estado al conjunto de estados del AFD
-void AFD::set_EdoAFN (ConIj e){
+void AFD::set_EdoNFA (ConIj e){
     EdoAFD.push_back(e);
     return;
 }
 
 //Agrega el conjutno de estados al conjunto de estados del AFD
-void AFD:: set_EdoAFN (std::vector<ConIj> Conj){
+void AFD:: set_EdoNFA (std::vector<ConIj> Conj){
     EdoAFD = Conj;
     return;
 }
@@ -87,7 +87,7 @@ std::vector<char> AFD:: get_Alfabeto (){
     return Alfabeto;
 }
 
-//Añade un simbolo al alfabeto
+//Aï¿½ade un simbolo al alfabeto
 void AFD:: set_Alfabeto(char simb){
     if(Alfabeto.empty() || !ContieneSimb_AFD(Alfabeto,simb)){
         Alfabeto.push_back(simb);
@@ -100,7 +100,7 @@ std::vector<ConIj> AFD:: get_EdoAcept(){
     return EdoAcept;
 }
 
-//Añade un estado al conjunto de estados de aceptacion
+//Aï¿½ade un estado al conjunto de estados de aceptacion
 void AFD:: set_EdoAcept (ConIj e){
     EdoAcept.push_back(e);
 }
@@ -129,7 +129,7 @@ void AFD::set_IdAFD(int ID){
 
 
 //Convierte un AFD (Con union especial) a un AFD
-AFD AFD :: Conv_AFNaAFD (AFN automata){
+AFD AFD :: Conv_NFAaAFD (NFA automata){
     int Contador =0,tam_Alf= (int) automata.Alfabeto.size();
     int tam_Stack;
     std::vector<ConIj> Estados; //auxiliar
@@ -142,8 +142,8 @@ AFD AFD :: Conv_AFNaAFD (AFN automata){
     //1) Cerradura epsilon del Estado inicial
     ConIj Sj = ConIj();
     Sj.set_ConIj_ID(0);
-    Sj.set_ConIJ_Edos(automata.CerraduraEpsilon(DameEdo_byID_AFD(automata.EdoAFN,automata.EdoIni)));
-    //2) Añadimos S0 al conjunto sin analizar y al conjunto para analizar
+    Sj.set_ConIJ_Edos(automata.CerraduraEpsilon(DameEdo_byID_AFD(automata.EdoNFA,automata.EdoIni)));
+    //2) Aï¿½adimos S0 al conjunto sin analizar y al conjunto para analizar
     Si.push_back(Sj);
     Nuevo_Si.push(Sj);
     tam_Stack = (int) Nuevo_Si.size();

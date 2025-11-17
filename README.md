@@ -11,6 +11,7 @@ Build system
 - Cmake: 4.1.2
 
 ## Documentation
+We use Doxygen
 
 WIP
 

@@ -2,13 +2,13 @@
 #include <memory>
 #include "ClaseEstado.h"
 #include "ClaseTransicion.h"
-#include "ClaseAFN.h"
-#include "ClaseAFD.h"
-#include "AnalizLexico.h"
-#include "EvaluadorExp1.h"
-#include "ER_AFN.h"
-#include "DescRecGram_Gram.h"
-#include "AnalizadorLL1.h"
+#include "NFA.h"
+// #include "ClaseAFD.h"
+// #include "AnalizLexico.h"
+// #include "EvaluadorExp1.h"
+// #include "ER_NFA.h"
+// #include "DescRecGram_Gram.h"
+// #include "AnalizadorLL1.h"
 #include <vector>
 #include <list>
 
@@ -58,13 +58,13 @@ int main()
     // }
 
     // /*
-    //     e.AFN_UnionEspecial(a1,20,a10.Contador); // +
-    //     e.AFN_UnionEspecial(a2,30,a10.Contador); // -
-    //     e.AFN_UnionEspecial(a3,40,a10.Contador); // *
-    //     e.AFN_UnionEspecial(a4,50,a10.Contador); // /
-    //     e.AFN_UnionEspecial(a5,60,a10.Contador); // (
-    //     e.AFN_UnionEspecial(a6,70,a10.Contador); // )
-    //     e.AFN_UnionEspecial(a10,10,a10.Contador); // num
+    //     e.NFA_UnionEspecial(a1,20,a10.Contador); // +
+    //     e.NFA_UnionEspecial(a2,30,a10.Contador); // -
+    //     e.NFA_UnionEspecial(a3,40,a10.Contador); // *
+    //     e.NFA_UnionEspecial(a4,50,a10.Contador); // /
+    //     e.NFA_UnionEspecial(a5,60,a10.Contador); // (
+    //     e.NFA_UnionEspecial(a6,70,a10.Contador); // )
+    //     e.NFA_UnionEspecial(a10,10,a10.Contador); // num
     // */
     // e.SetLexico("AFDAritmeticas.txt");
     // e.LexGram.SetSigma("2.57*(12+16-8)/13-17)");
@@ -135,42 +135,42 @@ void Ver_ConjAcept(vector<Estado> Conj)
 }
 // Pruebas
 /*
-AFN automata = AFN();
-AFN a1;
-a1 = automata.AFN_Basico('a','c',0);
+NFA automata = NFA();
+NFA a1;
+a1 = automata.NFA_Basico('a','c',0);
 
-AFN automata2 = AFN();
-AFN a2;
-a2 = automata2.AFN_Basico('d','f',a1.get_Contador());
+NFA automata2 = NFA();
+NFA a2;
+a2 = automata2.NFA_Basico('d','f',a1.get_Contador());
 
-a1 = a1.AFN_Union(a2);
-a1 = a1.AFN_CerrKleene();
-
-
-AFN automata3 = AFN();
-AFN a3;
-a3 = automata3.AFN_Basico('g','i',a1.get_Contador());
-
-a3 = a3.AFN_CerrPOS();
-
-AFN automata4 = AFN();
-AFN a4;
-a4 = automata4.AFN_Basico('w','y',a3.get_Contador());
+a1 = a1.NFA_Union(a2);
+a1 = a1.NFA_CerrKleene();
 
 
+NFA automata3 = NFA();
+NFA a3;
+a3 = automata3.NFA_Basico('g','i',a1.get_Contador());
+
+a3 = a3.NFA_CerrPOS();
+
+NFA automata4 = NFA();
+NFA a4;
+a4 = automata4.NFA_Basico('w','y',a3.get_Contador());
 
 
-AFN e =AFN();
-e.AFN_UnionEspecial(a1,10,a4.Contador);
-e.AFN_UnionEspecial(a3,20,a4.Contador);
-e.AFN_UnionEspecial(a4,30,a4.Contador);
+
+
+NFA e =NFA();
+e.NFA_UnionEspecial(a1,10,a4.Contador);
+e.NFA_UnionEspecial(a3,20,a4.Contador);
+e.NFA_UnionEspecial(a4,30,a4.Contador);
 
 AFD nuevo = AFD();
-nuevo = nuevo.Conv_AFNaAFD(e);
+nuevo = nuevo.Conv_NFAaAFD(e);
 
 Ver_Alfabeto(nuevo.Alfabeto);
 vector<ConIj> temp;
-temp = nuevo.get_EdoAFN();
+temp = nuevo.get_EdoNFA();
 nuevo.Crea_TablaAFD();
 
 if(!nuevo.Guarda_TablaAFD("pruebaAFD")){
@@ -183,229 +183,229 @@ f1.Carga_TablaAFD("pruebaAFD.txt");*/
 
 // Aritmeticas
 /*
-AFN automata = AFN();
-AFN a1;
-a1 = automata.AFN_Basico('+','+',0);
+NFA automata = NFA();
+NFA a1;
+a1 = automata.NFA_Basico('+','+',0);
 
-AFN automata2 = AFN();
-AFN a2;
-a2 = automata2.AFN_Basico('-','-',a1.get_Contador());
+NFA automata2 = NFA();
+NFA a2;
+a2 = automata2.NFA_Basico('-','-',a1.get_Contador());
 
-AFN automata3 = AFN();
-AFN a3;
-a3 = automata3.AFN_Basico('*','*',a2.get_Contador());
+NFA automata3 = NFA();
+NFA a3;
+a3 = automata3.NFA_Basico('*','*',a2.get_Contador());
 
-AFN automata4 = AFN();
-AFN a4;
-a4 = automata4.AFN_Basico('/','/',a3.get_Contador());
+NFA automata4 = NFA();
+NFA a4;
+a4 = automata4.NFA_Basico('/','/',a3.get_Contador());
 
-AFN automata5 = AFN();
-AFN a5;
-a5 = automata5.AFN_Basico('(','(',a4.get_Contador());
+NFA automata5 = NFA();
+NFA a5;
+a5 = automata5.NFA_Basico('(','(',a4.get_Contador());
 
-AFN automata6 = AFN();
-AFN a6;
-a6 = automata6.AFN_Basico(')',')',a5.get_Contador());
+NFA automata6 = NFA();
+NFA a6;
+a6 = automata6.NFA_Basico(')',')',a5.get_Contador());
 
-AFN automata7 = AFN();
-AFN a7;
-a7 = automata7.AFN_Basico('0','9',a6.get_Contador());
-a7 = a7.AFN_CerrPOS();
-
-
-
-AFN automata8 = AFN();
-AFN a8;
-a8 = automata8.AFN_Basico('.','.',a7.get_Contador());
-
-a7 = a7.AFN_Conca(a8);
+NFA automata7 = NFA();
+NFA a7;
+a7 = automata7.NFA_Basico('0','9',a6.get_Contador());
+a7 = a7.NFA_CerrPOS();
 
 
 
-AFN automata9 = AFN();
-AFN a9;
-a9 = automata9.AFN_Basico('0','9',a7.get_Contador());
-a9 = a9.AFN_CerrPOS();
+NFA automata8 = NFA();
+NFA a8;
+a8 = automata8.NFA_Basico('.','.',a7.get_Contador());
 
-a7 = a7.AFN_Conca(a9);
-
-AFN automata10 = AFN();
-AFN a10;
-a10 = automata10.AFN_Basico('0','9',a7.get_Contador());
-a10 = a10.AFN_CerrPOS();
-a10 = a10.AFN_Union(a7);
+a7 = a7.NFA_Conca(a8);
 
 
-AFN e =AFN();
-e.AFN_UnionEspecial(a1,20,a10.Contador); // +
-e.AFN_UnionEspecial(a2,30,a10.Contador); // -
-e.AFN_UnionEspecial(a3,40,a10.Contador); // *
-e.AFN_UnionEspecial(a4,50,a10.Contador); // /
-e.AFN_UnionEspecial(a5,60,a10.Contador); // (
-e.AFN_UnionEspecial(a6,70,a10.Contador); // )
-e.AFN_UnionEspecial(a10,10,a10.Contador); // num
+
+NFA automata9 = NFA();
+NFA a9;
+a9 = automata9.NFA_Basico('0','9',a7.get_Contador());
+a9 = a9.NFA_CerrPOS();
+
+a7 = a7.NFA_Conca(a9);
+
+NFA automata10 = NFA();
+NFA a10;
+a10 = automata10.NFA_Basico('0','9',a7.get_Contador());
+a10 = a10.NFA_CerrPOS();
+a10 = a10.NFA_Union(a7);
+
+
+NFA e =NFA();
+e.NFA_UnionEspecial(a1,20,a10.Contador); // +
+e.NFA_UnionEspecial(a2,30,a10.Contador); // -
+e.NFA_UnionEspecial(a3,40,a10.Contador); // *
+e.NFA_UnionEspecial(a4,50,a10.Contador); // /
+e.NFA_UnionEspecial(a5,60,a10.Contador); // (
+e.NFA_UnionEspecial(a6,70,a10.Contador); // )
+e.NFA_UnionEspecial(a10,10,a10.Contador); // num
 
 AFD nuevo = AFD();
-nuevo = nuevo.Conv_AFNaAFD(e);
+nuevo = nuevo.Conv_NFAaAFD(e);
 nuevo.Crea_TablaAFD();
 nuevo.Guarda_TablaAFD("AFDAritmeticas");*/
 
-// Expresion Regular a AFN
+// Expresion Regular a NFA
 // OR
-/*AFN automata = AFN();
-AFN a1;
-a1 = automata.AFN_Basico('|','|',0);
+/*NFA automata = NFA();
+NFA a1;
+a1 = automata.NFA_Basico('|','|',0);
 // CONC
-AFN automata2 = AFN();
-AFN a2;
-a2 = automata2.AFN_Basico('&','&',a1.Contador);
+NFA automata2 = NFA();
+NFA a2;
+a2 = automata2.NFA_Basico('&','&',a1.Contador);
 // CERR_POS
-AFN automata3 = AFN();
-AFN a3;
-a3 = automata3.AFN_Basico('+','+',a2.Contador);
+NFA automata3 = NFA();
+NFA a3;
+a3 = automata3.NFA_Basico('+','+',a2.Contador);
 // CERR_KLE
-AFN automata4 = AFN();
-AFN a4;
-a4 = automata.AFN_Basico('*','*',a3.Contador);
+NFA automata4 = NFA();
+NFA a4;
+a4 = automata.NFA_Basico('*','*',a3.Contador);
 //OPC
-AFN automata5 = AFN();
-AFN a5;
-a5 = automata5.AFN_Basico('?','?',a4.Contador);
+NFA automata5 = NFA();
+NFA a5;
+a5 = automata5.NFA_Basico('?','?',a4.Contador);
 //PAR_I
-AFN automata6 = AFN();
-AFN a6;
-a6 = automata6.AFN_Basico('(','(',a5.Contador);
+NFA automata6 = NFA();
+NFA a6;
+a6 = automata6.NFA_Basico('(','(',a5.Contador);
 // PAR_D
-AFN automata7 = AFN();
-AFN a7;
-a7 = automata7.AFN_Basico(')',')',a6.Contador);
+NFA automata7 = NFA();
+NFA a7;
+a7 = automata7.NFA_Basico(')',')',a6.Contador);
 //CORCH_I
-AFN automata8 = AFN();
-AFN a8;
-a8 = automata8.AFN_Basico('[','[',a7.Contador);
+NFA automata8 = NFA();
+NFA a8;
+a8 = automata8.NFA_Basico('[','[',a7.Contador);
 //CORCH_D
-AFN automata9 = AFN();
-AFN a9;
-a9 = automata9.AFN_Basico(']',']',a8.Contador);
+NFA automata9 = NFA();
+NFA a9;
+a9 = automata9.NFA_Basico(']',']',a8.Contador);
 //GUION
-AFN automata10 = AFN();
-AFN a10;
-a10 = automata10.AFN_Basico('-','-',a9.Contador);
+NFA automata10 = NFA();
+NFA a10;
+a10 = automata10.NFA_Basico('-','-',a9.Contador);
 //SIMBOLO
 //--> [a - z]
-AFN automata11 = AFN();
-AFN a11;
-a11 = automata11.AFN_Basico('a','z',a10.Contador);
+NFA automata11 = NFA();
+NFA a11;
+a11 = automata11.NFA_Basico('a','z',a10.Contador);
 
 //--> [A - Z]
-AFN automata12 = AFN();
-AFN a12;
-a12 = automata12.AFN_Basico('A','Z',a11.Contador);
+NFA automata12 = NFA();
+NFA a12;
+a12 = automata12.NFA_Basico('A','Z',a11.Contador);
 
 // --> [0 - 9]
-AFN automata13 = AFN();
-AFN a13;
-a13 = automata13.AFN_Basico('0','9',a12.Contador);
+NFA automata13 = NFA();
+NFA a13;
+a13 = automata13.NFA_Basico('0','9',a12.Contador);
 
 // --> [A - z] | [a - z] | [0 - 9]
-a13 = a13.AFN_Union(a11);
-a13 = a13.AFN_Union(a12);
+a13 = a13.NFA_Union(a11);
+a13 = a13.NFA_Union(a12);
 
 // --> |
-AFN automata14 = AFN();
-AFN a14;
-a14 = automata14.AFN_Basico('|','|',a13.Contador);
+NFA automata14 = NFA();
+NFA a14;
+a14 = automata14.NFA_Basico('|','|',a13.Contador);
 
 // --> &
-AFN automata15 = AFN();
-AFN a15;
-a15 = automata15.AFN_Basico('&','&',a14.Contador);
+NFA automata15 = NFA();
+NFA a15;
+a15 = automata15.NFA_Basico('&','&',a14.Contador);
  // --> +
-AFN automata16 = AFN();
-AFN a16;
-a16 = automata16.AFN_Basico('+','+',a15.Contador);
+NFA automata16 = NFA();
+NFA a16;
+a16 = automata16.NFA_Basico('+','+',a15.Contador);
 // --> *
-AFN automata17 = AFN();
-AFN a17;
-a17 = automata17.AFN_Basico('*','*',a16.Contador);
+NFA automata17 = NFA();
+NFA a17;
+a17 = automata17.NFA_Basico('*','*',a16.Contador);
  // --> ?
-AFN automata18 = AFN();
-AFN a18;
-a18 = automata18.AFN_Basico('?','?',a17.Contador);
+NFA automata18 = NFA();
+NFA a18;
+a18 = automata18.NFA_Basico('?','?',a17.Contador);
  // --> (
-AFN automata19 = AFN();
-AFN a19;
-a19 = automata19.AFN_Basico('(','(',a18.Contador);
+NFA automata19 = NFA();
+NFA a19;
+a19 = automata19.NFA_Basico('(','(',a18.Contador);
  // --> )
-AFN automata20 = AFN();
-AFN a20;
-a20 = automata20.AFN_Basico(')',')',a19.Contador);
+NFA automata20 = NFA();
+NFA a20;
+a20 = automata20.NFA_Basico(')',')',a19.Contador);
  // --> [
-AFN automata21 = AFN();
-AFN a21;
-a21 = automata21.AFN_Basico('[','[',a20.Contador);
+NFA automata21 = NFA();
+NFA a21;
+a21 = automata21.NFA_Basico('[','[',a20.Contador);
  // --> ]
-AFN automata22 = AFN();
-AFN a22;
-a22 = automata22.AFN_Basico(']',']',a21.Contador);
+NFA automata22 = NFA();
+NFA a22;
+a22 = automata22.NFA_Basico(']',']',a21.Contador);
  // --> -
-AFN automata23 = AFN();
-AFN a23;
-a23 = automata23.AFN_Basico('-','-',a22.Contador);
+NFA automata23 = NFA();
+NFA a23;
+a23 = automata23.NFA_Basico('-','-',a22.Contador);
 
 // --> '\'
-AFN automata24 = AFN();
-AFN a24;
-a24 = automata24.AFN_Basico('\\','\\',a23.Contador);
+NFA automata24 = NFA();
+NFA a24;
+a24 = automata24.NFA_Basico('\\','\\',a23.Contador);
 
 
 // --> Concatenacion de simbolos
-a24 = a24.AFN_Union(a14);
-a24 = a24.AFN_Union(a15);
-a24 = a24.AFN_Union(a16);
-a24 = a24.AFN_Union(a17);
-a24 = a24.AFN_Union(a18);
-a24 = a24.AFN_Union(a19);
-a24 = a24.AFN_Union(a20);
-a24 = a24.AFN_Union(a21);
-a24 = a24.AFN_Union(a22);
-a24 = a24.AFN_Union(a23);
+a24 = a24.NFA_Union(a14);
+a24 = a24.NFA_Union(a15);
+a24 = a24.NFA_Union(a16);
+a24 = a24.NFA_Union(a17);
+a24 = a24.NFA_Union(a18);
+a24 = a24.NFA_Union(a19);
+a24 = a24.NFA_Union(a20);
+a24 = a24.NFA_Union(a21);
+a24 = a24.NFA_Union(a22);
+a24 = a24.NFA_Union(a23);
 
     // --> '\'
-AFN automata25 = AFN();
-AFN a25;
-a25 = automata25.AFN_Basico('\\','\\',a24.Contador);
-a25 = a25.AFN_Conca(a24);
+NFA automata25 = NFA();
+NFA a25;
+a25 = automata25.NFA_Basico('\\','\\',a24.Contador);
+a25 = a25.NFA_Conca(a24);
 
 // Completo
-a13 = a13.AFN_Union(a25);
+a13 = a13.NFA_Union(a25);
 // Diagonales invertidas
-AFN automata26 = AFN();
-AFN a26;
-a26 = automata26.AFN_Basico('\\','\\',a13.Contador);
+NFA automata26 = NFA();
+NFA a26;
+a26 = automata26.NFA_Basico('\\','\\',a13.Contador);
 //Union especial
-AFN e =AFN();
-e.AFN_UnionEspecial(a1,10,a13.Contador);
-e.AFN_UnionEspecial(a2,20,a13.Contador);
-e.AFN_UnionEspecial(a3,30,a13.Contador);
-e.AFN_UnionEspecial(a4,40,a13.Contador);
-e.AFN_UnionEspecial(a5,50,a13.Contador);
-e.AFN_UnionEspecial(a6,60,a13.Contador);
-e.AFN_UnionEspecial(a7,70,a13.Contador);
-e.AFN_UnionEspecial(a8,80,a13.Contador);
-e.AFN_UnionEspecial(a9,90,a13.Contador);
-e.AFN_UnionEspecial(a10,100,a13.Contador);
-e.AFN_UnionEspecial(a13,110,a13.Contador);
-//e.AFN_UnionEspecial(a26,120,a13.Contador);
+NFA e =NFA();
+e.NFA_UnionEspecial(a1,10,a13.Contador);
+e.NFA_UnionEspecial(a2,20,a13.Contador);
+e.NFA_UnionEspecial(a3,30,a13.Contador);
+e.NFA_UnionEspecial(a4,40,a13.Contador);
+e.NFA_UnionEspecial(a5,50,a13.Contador);
+e.NFA_UnionEspecial(a6,60,a13.Contador);
+e.NFA_UnionEspecial(a7,70,a13.Contador);
+e.NFA_UnionEspecial(a8,80,a13.Contador);
+e.NFA_UnionEspecial(a9,90,a13.Contador);
+e.NFA_UnionEspecial(a10,100,a13.Contador);
+e.NFA_UnionEspecial(a13,110,a13.Contador);
+//e.NFA_UnionEspecial(a26,120,a13.Contador);
 AFD nuevo = AFD();
-nuevo = nuevo.Conv_AFNaAFD(e);
+nuevo = nuevo.Conv_NFAaAFD(e);
 nuevo.Crea_TablaAFD();
-nuevo.Guarda_TablaAFD("ER_AFN");
+nuevo.Guarda_TablaAFD("ER_NFA");
 
 AFD  nuevo = AFD();
-nuevo.Carga_TablaAFD("ER_AFN.txt");
+nuevo.Carga_TablaAFD("ER_NFA.txt");
 
-ER_AFN e = ER_AFN("[a-z]|[A-Z]|[0-9]|((\\\\)&(\\||\\&|\\+|\\*|\\?|\\(|\\)|\\[|\\]|\\-|\\\\))",nuevo);
+ER_NFA e = ER_NFA("[a-z]|[A-Z]|[0-9]|((\\\\)&(\\||\\&|\\+|\\*|\\?|\\(|\\)|\\[|\\]|\\-|\\\\))",nuevo);
 
 if(e.IniConversion()){
     cout<<"Automata creado por Expresion regular"<<endl;
@@ -416,73 +416,73 @@ if(e.IniConversion()){
 
 /*
 //Punto y coma (PC)
-AFN automata = AFN();
-AFN a1;
-a1 = automata.AFN_Basico(';',';',0);
+NFA automata = NFA();
+NFA a1;
+a1 = automata.NFA_Basico(';',';',0);
 
 // FLECHA
-AFN automata2 = AFN();
-AFN a2;
-a2 = automata2.AFN_Basico('-','-',a1.Contador);
+NFA automata2 = NFA();
+NFA a2;
+a2 = automata2.NFA_Basico('-','-',a1.Contador);
 
-AFN automata3 = AFN();
-AFN a3;
-a3 = automata3.AFN_Basico('>','>',a2.Contador);
+NFA automata3 = NFA();
+NFA a3;
+a3 = automata3.NFA_Basico('>','>',a2.Contador);
 
-a2 = a2.AFN_Conca(a3);
+a2 = a2.NFA_Conca(a3);
 
 // OR
-AFN automata4 = AFN();
-AFN a4;
-a4 = automata4.AFN_Basico('|','|',a2.Contador);
+NFA automata4 = NFA();
+NFA a4;
+a4 = automata4.NFA_Basico('|','|',a2.Contador);
 
 //SIMBOLO
-AFN automata5 = AFN();
-AFN a5;
-a5 = automata5.AFN_Basico('a','z',a4.Contador);
+NFA automata5 = NFA();
+NFA a5;
+a5 = automata5.NFA_Basico('a','z',a4.Contador);
 
-AFN automata6 = AFN();
-AFN a6;
-a6 = automata6.AFN_Basico('A','Z',a5.Contador);
+NFA automata6 = NFA();
+NFA a6;
+a6 = automata6.NFA_Basico('A','Z',a5.Contador);
 
-AFN automata7 = AFN();
-AFN a7;
-a7 = automata7.AFN_Basico('0','9',a6.Contador);
+NFA automata7 = NFA();
+NFA a7;
+a7 = automata7.NFA_Basico('0','9',a6.Contador);
 
-AFN automata8 = AFN();
-AFN a8;
-a8 = automata8.AFN_Basico('_','_',a7.Contador);
+NFA automata8 = NFA();
+NFA a8;
+a8 = automata8.NFA_Basico('_','_',a7.Contador);
 
-a8 = a8.AFN_Union(a5);
-a8 = a8.AFN_Union(a6);
-a8 = a8.AFN_Union(a7);
-a8 = a8.AFN_CerrKleene();
+a8 = a8.NFA_Union(a5);
+a8 = a8.NFA_Union(a6);
+a8 = a8.NFA_Union(a7);
+a8 = a8.NFA_CerrKleene();
 
-AFN automata9 = AFN();
-AFN a9;
-a9 = automata9.AFN_Basico('a','z',a8.Contador);
+NFA automata9 = NFA();
+NFA a9;
+a9 = automata9.NFA_Basico('a','z',a8.Contador);
 
-AFN automata10 = AFN();
-AFN a10;
-a10 = automata10.AFN_Basico('A','Z',a9.Contador);
+NFA automata10 = NFA();
+NFA a10;
+a10 = automata10.NFA_Basico('A','Z',a9.Contador);
 
-a10 = a10.AFN_Union(a9);
-a10 = a10.AFN_Conca(a8);
+a10 = a10.NFA_Union(a9);
+a10 = a10.NFA_Conca(a8);
 
 
-AFN automata11 = AFN();
-AFN a11;
-a11 = automata10.AFN_Basico(' ',' ',a11.Contador);
+NFA automata11 = NFA();
+NFA a11;
+a11 = automata10.NFA_Basico(' ',' ',a11.Contador);
 
-AFN e =AFN();
-e.AFN_UnionEspecial(a11,2001,a11.Contador);
-e.AFN_UnionEspecial(a1,10,a11.Contador);
-e.AFN_UnionEspecial(a2,20,a11.Contador);
-e.AFN_UnionEspecial(a4,30,a11.Contador);
-e.AFN_UnionEspecial(a10,40,a11.Contador);
+NFA e =NFA();
+e.NFA_UnionEspecial(a11,2001,a11.Contador);
+e.NFA_UnionEspecial(a1,10,a11.Contador);
+e.NFA_UnionEspecial(a2,20,a11.Contador);
+e.NFA_UnionEspecial(a4,30,a11.Contador);
+e.NFA_UnionEspecial(a10,40,a11.Contador);
 
 AFD nuevo = AFD();
-nuevo = nuevo.Conv_AFNaAFD(e);
+nuevo = nuevo.Conv_NFAaAFD(e);
 nuevo.Crea_TablaAFD();
 nuevo.Guarda_TablaAFD("AFD_GramGram");*/
 

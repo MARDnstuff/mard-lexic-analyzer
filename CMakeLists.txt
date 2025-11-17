@@ -18,14 +18,14 @@ add_library(lexic STATIC
     src/AnalizadorLL1.cpp
     src/AnalizLexico.cpp
     src/ClaseAFD.cpp
-    src/ClaseAFN.cpp
+    src/NFA.cpp
     src/ClaseEstado.cpp
     src/ClaseNodo.cpp
     src/ClaseTransicion.cpp
     src/ConIJ.cpp
     src/DescRecGram_Gram.cpp
     src/ElemArreglo.cpp
-    src/ER_AFN.cpp
+    src/ER_NFA.cpp
     src/Estado_AnalizLexico.cpp
     src/EvaluadorExp1.cpp
     src/Simb.cpp

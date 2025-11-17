@@ -1,6 +1,6 @@
 #ifndef CLASEAFD_H
 #define CLASEAFD_H
-#include "ClaseAFN.h"
+#include "NFA.h"
 #include "ConIj.h"
 #include <iostream>
 #include <stdlib.h>
@@ -32,24 +32,24 @@ class AFD{
         //Constructor de AFD
         AFD();
         //Regresa el conjunto de Estados del AFD
-        std::vector<ConIj> get_EdoAFN ();
+        std::vector<ConIj> get_EdoNFA ();
 
         //Agrega una estado al conjunto de estados del AFD
-        void set_EdoAFN (ConIj e);
+        void set_EdoNFA (ConIj e);
 
         //Agrega el conjutno de estados al conjunto de estados del AFD
-        void set_EdoAFN (std::vector<ConIj> Conj);
+        void set_EdoNFA (std::vector<ConIj> Conj);
 
         //Regresa el Alfabeto
         std::vector<char> get_Alfabeto ();
 
-        //Añade un simbolo al alfabeto
+        //Aï¿½ade un simbolo al alfabeto
         void set_Alfabeto(char simb);
 
         //Regresa el conjunto de estados de aceptacion
         std::vector<ConIj> get_EdoAcept();
 
-        //Añade un estado al conjunto de estados de aceptacion
+        //Aï¿½ade un estado al conjunto de estados de aceptacion
         void set_EdoAcept (ConIj e);
 
         //Regresa el ID del estado inicial
@@ -65,7 +65,7 @@ class AFD{
         void set_IdAFD(int ID);
 
         //Convierte un AFD (Con union especial) a un AFD
-        AFD Conv_AFNaAFD (AFN automata);
+        AFD Conv_NFAaAFD (NFA automata);
 
         //Establece la tabla de adyacencia correspondiente al AFD (this)
         void Crea_TablaAFD ();
