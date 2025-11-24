@@ -1,15 +1,15 @@
 #ifndef CLASEESTADO_H
 #define CLASEESTADO_H
 #include <vector>
-#include "ClaseTransicion.h"
+#include "Transition.h"
 
 // TODO: Update class documentation and translate to English
 
 class Estado{
     public:
         int ContadorIdEstado = 0; //contador para seguir la enumeracion secuencial
-        //Conjunto de transiciones del estado
-        std::vector<Transicion> Trans1;
+        //Conjunto de Transitiones del estado
+        std::vector<Transition> Trans1;
     private:
         //Identificador del estado
         int idEstado1;
@@ -35,13 +35,13 @@ class Estado{
         int get_Token();
         // Establece el valor del Token (valor �nico)
         void set_Token(int value);
-        // Regresa el conjunto de Transiciones asociadas al estado
-        std::vector<Transicion>  get_Trans (){
+        // Regresa el conjunto de Transitiones asociadas al estado
+        std::vector<Transition>  get_Trans (){
             return Trans1;
         }
-        // Establece el conjunto (o alguna transicion dentro del conjunto) de transiciones
+        // Establece el conjunto (o alguna Transition dentro del conjunto) de Transitiones
         // Agrega a la lista
-        std::vector<Transicion> set_Trans (Transicion value);
+        std::vector<Transition> set_Trans (Transition value);
 
         virtual ~Estado();
 

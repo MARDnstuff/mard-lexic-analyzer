@@ -19,20 +19,20 @@
  * @note NFA stands for Non-deterministic Finite Automaton or in spanish
  * NFA - Automata Finito No Determinista.
  */
-class NFA{
+class NFA {
+
     // TODO: Check these attributes if they should be private
-    public: //private:
+    private:
         int counter;
-        int EdoIni;
-        std::vector<Estado> EdoNFA;
-        std::vector<Estado> EdoAcept;
-        std::vector<char> Alfabeto;
-        bool SeAgregoNFAUnionLexico; //sin informacion por el momento
-        int IdNFA;
+        int initialState;
+        std::vector<Estado> states;
+        std::vector<Estado> acceptanceStates;
+        std::vector<char> alphabet;
+        // TODO: Check if this attribute is necessary (I think it indicates if a special union has been added)
+        bool SeAgregoNFAUnionLexico = false;
+        int id;
 
     public:
-        // @brief Constructs an empty NFA
-        NFA();
 
         /**
          * @brief Creates a basic NFA for a single symbol
@@ -40,7 +40,7 @@ class NFA{
          * @param initialCounter The starting state counter
          * @return A basic NFA for the given symbol
          */
-        NFA createBasic (char symbol,int initialCounter);
+        NFA (char symbol,int initialCounter);
 
         /**
          * @brief Creates a basic NFA for a range of characters
@@ -49,7 +49,7 @@ class NFA{
          * @param initialCounter The starting state counter
          * @return A basic NFA for the given character range
          */
-        NFA createBasic (char firstSymbol,char lastSymbol,int initialCounter);
+        NFA (char firstSymbol,char lastSymbol,int initialCounter);
 
         /**
          * @brief Makes a union of two NFAs

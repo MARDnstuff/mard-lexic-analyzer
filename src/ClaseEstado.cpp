@@ -1,9 +1,9 @@
 #include "ClaseEstado.h"
 #include <vector>
 
-// TODO: Udpate names and add a better logging mechanism instead of using std::cout for debugging
+// TODO: Udpate names and add a better logging mechanism instead of using std::cout for debugging (spdlog)
 
- //Constructor de un estado
+// Constructor de un estado
 Estado::Estado(){
     EdoAcept1 = false;
     Token1 = -1;
@@ -54,9 +54,9 @@ void Estado:: set_Token(int value){
 }
 
 
-// Establece el conjunto (o alguna transicion dentro del conjunto) de transiciones
+// Establece el conjunto (o alguna Transition dentro del conjunto) de Transitiones
 // Agrega a la lista
-std::vector<Transicion> Estado :: set_Trans (Transicion value){
+std::vector<Transition> Estado :: set_Trans (Transition value){
     Trans1.push_back(value);
     return Trans1;
 }

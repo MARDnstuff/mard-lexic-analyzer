@@ -76,50 +76,49 @@ std::vector<char> Unir_ConjAlf(std::vector<char> Conj1,std::vector<char> Conj2){
     }//for
     return Conj1;
 }
-/////////////////////////////////
-//Metodos propios de la clase
 
-//Constructor del NFA
-NFA::NFA(){
-    IdNFA = 0;
-    EdoIni = -1;//posible error
-    EdoNFA.clear();
-    EdoAcept.clear();
-    Alfabeto.clear();
-    SeAgregoNFAUnionLexico = false; //sin informaci�n por el momento
-    //ctor
+// NFA::NFA() {
+//     id = 0;
+//     initialState = -1;
+//     states.clear();
+//     acceptanceStates.clear();
+//     alphabet.clear();
+//     SeAgregoNFAUnionLexico = false; 
+// }
+
+
+NFA::NFA(char symbol, int initialCounter) {
+
+    // Counter for states
+    int source = initialCounter;
+    int target = source + 1;
+
+    // TODO: Refactor this code to avoid duplication, use constructor
+    Estado state1, state2;
+    state1 = Estado();
+    state1.set_IdEstado(source);
+    state2 = Estado();
+    state2.set_IdEstado(target);
+    this->counter = target + 1;
+    state1.set_Trans(Transicion(symbol, source, target));
+    state2.set_EdoAcept(true);
+    state2.set_Trans(Transicion());
+    this->alphabet.push_back(symbol);
+    initialState = state1.get_IdEstado();
+    this->states.push_back(state1);
+    this->states.push_back(state2);
+    this->acceptanceStates.push_back(state2);
+    this->counter = target + 1;
+    SeAgregoNFAUnionLexico = false;
 }
 
-//Crea un NFA basico para un simbolo
-NFA NFA ::createBasic(char symbol, int initialCounter){
-    NFA temp = NFA();
-    int Origen=initialCounter,Destino = initialCounter+1;
-    Estado e1, e2;
-    e1 = Estado();
-    e1.set_IdEstado(Origen);
-    e2 = Estado();
-    e2.set_IdEstado(Destino);
 
-    Transicion t = Transicion(symbol,Origen,Destino);
-    Transicion t2 = Transicion();
-    counter=Destino+1;
-    e1.set_Trans(t);
-    e2.set_EdoAcept(true);
-    e2.set_Trans(t2);
-    temp.Alfabeto.push_back(symbol);
-    temp.EdoIni = e1.get_IdEstado();
-    temp.EdoNFA.push_back(e1);
-    temp.EdoNFA.push_back(e2);
-    temp.EdoAcept.push_back(e2);
-    temp.counter = Destino+1;
-    SeAgregoNFAUnionLexico = false; //sin informaci�n por el momento
-    return temp;
-}
+NFA::NFA(char firstSymbol, char lastSymbol, int initialCounter){
+    
+    // Counter for states
+    int source = initialCounter;
+    int target = initialCounter + 1;
 
-//Crea un NFA Basico para un rango de caracteres
-NFA NFA ::createBasic(char firstSymbol, char lastSymbol, int initialCounter){
-    NFA temp = NFA();
-    int Origen=initialCounter,Destino = initialCounter+1;
     Estado e1, e2;
     e1 = Estado();
     e1.set_IdEstado(Origen);
