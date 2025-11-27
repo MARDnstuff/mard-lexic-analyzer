@@ -1,7 +1,7 @@
 #include <iostream>
 #include <memory>
-#include "ClaseEstado.h"
-#include "ClaseTransicion.h"
+#include "State.h"
+#include "Transition.h"
 #include "NFA.h"
 // #include "ClaseAFD.h"
 // #include "AnalizLexico.h"
@@ -13,9 +13,9 @@
 #include <list>
 
 using namespace std;
-Estado Edo_byID(vector<Estado> Edo, int EdoID);
+State Edo_byID(vector<State> Edo, int EdoID);
 void Ver_Alfabeto(vector<char> Alf);
-void Ver_ConjAcept(vector<Estado> Conj);
+void Ver_ConjAcept(vector<State> Conj);
 
 // pruebas paso por referencia
 void modifica(shared_ptr<float> prueba)
@@ -95,18 +95,18 @@ int main()
 }
 
 // E -> T Ep; Ep -> mas T Ep| menos T Ep |epsilon; T -> F Tp; Tp -> prod F Tp | div F Tp | epsilon; F -> parI E parD | num;
-Estado Edo_byID(vector<Estado> Edo, int EdoID)
+State Edo_byID(vector<State> Edo, int EdoID)
 {
     int tam = (int)Edo.size();
     for (int i = 0; i < tam; i++)
     {
-        if (Edo.at(i).get_IdEstado() == EdoID)
+        if (Edo.at(i).getStateId() == EdoID)
         {
             return Edo.at(i);
         } // if
     } // for
-    Estado e = Estado();
-    e = e.Estado_null();
+    State e = State();
+    e.setStateId(-1);
     return e;
 }
 
@@ -122,13 +122,13 @@ void Ver_Alfabeto(vector<char> Alf)
     return;
 }
 
-void Ver_ConjAcept(vector<Estado> Conj)
+void Ver_ConjAcept(vector<State> Conj)
 {
     int tam = (int)Conj.size();
     cout << "Estados de Aceptacion ={";
     for (int i = 0; i < tam; i++)
     {
-        cout << Conj.at(i).get_IdEstado() << "(" << Conj.at(i).get_Token() << "), ";
+        cout << Conj.at(i).getStateId() << "(" << Conj.at(i).getToken() << "), ";
     } // for
     cout << "}" << endl;
     return;

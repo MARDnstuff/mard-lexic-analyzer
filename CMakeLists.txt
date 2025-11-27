@@ -15,21 +15,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # CREATE LIBRARY
 add_library(lexic STATIC
-    src/AnalizadorLL1.cpp
-    src/AnalizLexico.cpp
-    src/ClaseAFD.cpp
     src/NFA.cpp
-    src/ClaseEstado.cpp
-    src/ClaseNodo.cpp
-    src/ClaseTransicion.cpp
-    src/ConIJ.cpp
-    src/DescRecGram_Gram.cpp
-    src/ElemArreglo.cpp
-    src/ER_NFA.cpp
-    src/Estado_AnalizLexico.cpp
-    src/EvaluadorExp1.cpp
-    src/Simb.cpp
-    src/SimbTerm.cpp
+    src/State.cpp
+    src/Transition.cpp
+    src/SpecialSymbol.cpp
 )
 
 # INCLUDE PUBLIC HEADERS

@@ -1,6 +1,6 @@
 #include "NFA.h"
-#include "ClaseEstado.h"
-#include "ClaseTransicion.h"
+#include "State.h"
+#include "Transition.h"
 
 
 // TODO: Add a better logging mechanism instead of using std::cout for debugging
@@ -8,7 +8,7 @@
 //---FUNCIONES AUXILIARES---
 
 //Verifica que el id del estado se encuentre en el vector
-bool hasState(std::vector<Estado> Edo,int EdoDestino){
+bool hasState(std::vector<State> Edo,int EdoDestino){
     int tam = (int) Edo.size();
 
     for(int i=0; i<tam; i++){
@@ -20,20 +20,20 @@ bool hasState(std::vector<Estado> Edo,int EdoDestino){
 }
 
 //Regresa el estado por ID, que se encuentra dentro del vector
-Estado getStateById (std::vector<Estado> Edo,int EdoID){
+State getStateById (std::vector<State> Edo,int EdoID){
     int tam = (int) Edo.size();
     for(int i=0; i<tam;i++){
         if(Edo.at(i).get_IdEstado() == EdoID){
             return Edo.at(i);
         }//if
     }//for
-    Estado e = Estado();
+    State e = State();
     e = e.Estado_null();
     return e;
 }
 
 //Regresa el indice en donde se encuentra el estado dentro de un conjunto
-int getIndexStateById (std::vector<Estado> Edo,int EdoID){
+int getIndexStateById (std::vector<State> Edo,int EdoID){
     int tam = (int) Edo.size();
     for(int i=0; i<tam;i++){
         if(Edo.at(i).get_IdEstado() == EdoID){
@@ -58,7 +58,7 @@ bool ContieneSimb (std::vector<char> Alf,char simb){
 }
 
 //Regresa la union de los conuntos de estados
-std::vector<Estado> Unir_ConjEdos(std::vector<Estado> Conj1,std::vector<Estado> Conj2){
+std::vector<State> Unir_ConjEdos(std::vector<State> Conj1,std::vector<State> Conj2){
     int tam_ = (int) Conj2.size();
     for(int i=0;i<tam_;i++){
         Conj1.push_back(Conj2.at(i));
@@ -77,15 +77,7 @@ std::vector<char> Unir_ConjAlf(std::vector<char> Conj1,std::vector<char> Conj2){
     return Conj1;
 }
 
-// NFA::NFA() {
-//     id = 0;
-//     initialState = -1;
-//     states.clear();
-//     acceptanceStates.clear();
-//     alphabet.clear();
-//     SeAgregoNFAUnionLexico = false; 
-// }
-
+// TODO: Update counting mechanism to ensure unique state IDs across multiple NFAs
 
 NFA::NFA(char symbol, int initialCounter) {
 
@@ -93,23 +85,22 @@ NFA::NFA(char symbol, int initialCounter) {
     int source = initialCounter;
     int target = source + 1;
 
-    // TODO: Refactor this code to avoid duplication, use constructor
-    Estado state1, state2;
-    state1 = Estado();
-    state1.set_IdEstado(source);
-    state2 = Estado();
-    state2.set_IdEstado(target);
-    this->counter = target + 1;
-    state1.set_Trans(Transicion(symbol, source, target));
-    state2.set_EdoAcept(true);
-    state2.set_Trans(Transicion());
-    this->alphabet.push_back(symbol);
-    initialState = state1.get_IdEstado();
-    this->states.push_back(state1);
-    this->states.push_back(state2);
-    this->acceptanceStates.push_back(state2);
-    this->counter = target + 1;
-    SeAgregoNFAUnionLexico = false;
+    State state1 = State(), state2 = State();
+    counter = target++;
+
+    state1.setStateId(source);
+    state1.addTransition(Transition(symbol, source, target));
+
+    state2.setStateId(target);
+    state2.setAcceptanceState(true);
+
+    alphabet.push_back(symbol);
+    initialState = state1.getStateId();
+
+    states.push_back(state1);
+    states.push_back(state2);
+    acceptanceStates.push_back(state2);
+    counter = target + 1;
 }
 
 
@@ -119,10 +110,10 @@ NFA::NFA(char firstSymbol, char lastSymbol, int initialCounter){
     int source = initialCounter;
     int target = initialCounter + 1;
 
-    Estado e1, e2;
-    e1 = Estado();
+    State e1, e2;
+    e1 = State();
     e1.set_IdEstado(Origen);
-    e2 = Estado();
+    e2 = State();
     e2.set_IdEstado(Destino);
     int s1 = (int) firstSymbol,s2 = (int) lastSymbol;
     while(s1<=s2 ){
@@ -161,10 +152,10 @@ NFA NFA :: makeUnion (NFA automaton){
         Origen= counter;
     }
     int Destino=Origen+1;
-    Estado e1,e2;
-    e1 = Estado();
+    State e1,e2;
+    e1 = State();
     e1.set_IdEstado(Origen);
-    e2 = Estado();
+    e2 = State();
     e2.set_IdEstado(Destino);
     //Estas transiciones le pertencen a e1
     Transicion t1 = Transicion(EPSILON,Origen,EdoIni);
@@ -288,10 +279,10 @@ NFA NFA :: makeConcat (NFA automaton){
 //Cerradura positiva de un NFA
 NFA NFA :: applyPositiveClosure(){
     int Origen=counter,Destino=Origen + 1;
-    Estado e1,e2;
-    e1 = Estado();//nuevo estado inicial
+    State e1,e2;
+    e1 = State();//nuevo estado inicial
     e1.set_IdEstado(Origen);
-    e2 = Estado();//nuevo estado final
+    e2 = State();//nuevo estado final
     e2.set_IdEstado(Destino);
 
 
@@ -329,10 +320,10 @@ NFA NFA :: applyPositiveClosure(){
 //Cerradura de Kleene
 NFA NFA :: applyKleeneClosure(){
     int Origen=counter,Destino=Origen + 1;
-    Estado e1,e2;
-    e1 = Estado();//nuevo estado inicial
+    State e1,e2;
+    e1 = State();//nuevo estado inicial
     e1.set_IdEstado(Origen);
-    e2 = Estado();//nuevo estado final
+    e2 = State();//nuevo estado final
     e2.set_IdEstado(Destino);
 
 
@@ -370,10 +361,10 @@ NFA NFA :: applyKleeneClosure(){
 //Operacion opcional (?)
 NFA NFA :: makeOptional(){
     int Origen=counter,Destino=Origen + 1;
-    Estado e1,e2;
-    e1 = Estado();//nuevo estado inicial
+    State e1,e2;
+    e1 = State();//nuevo estado inicial
     e1.set_IdEstado(Origen);
-    e2 = Estado();//nuevo estado final
+    e2 = State();//nuevo estado final
     e2.set_IdEstado(Destino);
 
 
@@ -409,11 +400,11 @@ NFA NFA :: makeOptional(){
 }
 
  //Regresa el conjunto de estados que son accesible desde "e" con EPSILON
-std::vector<Estado> NFA:: computeEpsilonClosure(Estado state){
-    std::vector<Estado> R;
-    std::stack<Estado> S;
+std::vector<State> NFA:: computeEpsilonClosure(State state){
+    std::vector<State> R;
+    std::stack<State> S;
 
-    Estado aux, Edo;
+    State aux, Edo;
     S.push(state);
     int tam = (int) S.size(), tam_t;
 
@@ -425,7 +416,7 @@ std::vector<Estado> NFA:: computeEpsilonClosure(Estado state){
         for(int i=0; i<tam_t;i++){
           if(aux.get_Trans().at(i).get_SimbInf() == EPSILON){
             if(!hasState(R,aux.get_Trans().at(i).get_EdoDestino())){
-                    Estado p = Estado();
+                    State p = State();
                     p = getStateById(EdoNFA,aux.get_Trans().at(i).get_EdoDestino());
                     if(p.get_IdEstado() != -1){
                         S.push(p);
@@ -442,11 +433,11 @@ std::vector<Estado> NFA:: computeEpsilonClosure(Estado state){
 
 //Regresa el conjunto de estados que son accesibles desde cada uno
 //de los estados e que estan en el vector con EPSILON
-std::vector<Estado> NFA :: computeEpsilonClosure(std::vector<Estado> states){
+std::vector<State> NFA :: computeEpsilonClosure(std::vector<State> states){
     int tam = (int) states.size(),tam_;
-    std::vector<Estado> temp;
-    std::vector<Estado> temp2;
-    std::vector<Estado> Cerradura;
+    std::vector<State> temp;
+    std::vector<State> temp2;
+    std::vector<State> Cerradura;
     temp.clear();
 
     for(int i=0;i<tam;i++){
@@ -460,10 +451,10 @@ std::vector<Estado> NFA :: computeEpsilonClosure(std::vector<Estado> states){
 }
 
 //Regresa el cnjunto de estado a los que me puedo mover con el simbolo
-std::vector<Estado> NFA :: computeMove(std::vector<Estado> states,char symbol){
-    std::vector<Estado> C;
+std::vector<State> NFA :: computeMove(std::vector<State> states,char symbol){
+    std::vector<State> C;
     std::vector<Transicion> t;
-    Estado aux;
+    State aux;
     C.clear();
     t.clear();
 
@@ -483,8 +474,8 @@ std::vector<Estado> NFA :: computeMove(std::vector<Estado> states,char symbol){
 
 //Regresa el conjunto de estados obtenidos de la cerradura epsilon del conjunto de estados
 //accesibles con un simbolo
-std::vector<Estado> NFA :: computeGoto(std::vector<Estado> states,char symbol){
-     std::vector<Estado> C;
+std::vector<State> NFA :: computeGoto(std::vector<State> states,char symbol){
+     std::vector<State> C;
      C.clear();
      C = computeEpsilonClosure(computeMove(states,symbol));
      return C;
@@ -493,10 +484,10 @@ std::vector<Estado> NFA :: computeGoto(std::vector<Estado> states,char symbol){
 //Construye la union especial para los NFA, los va agregando uno a uno a this
 //Se pretende que this sea nuevo
 void NFA ::buildSpecialUnion(NFA automaton, int token, int globalCounter){
-    Estado e;
+    State e;
 
     if(!SeAgregoNFAUnionLexico){
-        e = Estado();
+        e = State();
         e.set_IdEstado(globalCounter);
         Transicion t = Transicion(EPSILON,globalCounter,automaton.EdoIni);
         EdoNFA.clear();
@@ -533,14 +524,14 @@ int tam = (int) automaton.EdoNFA.size();
         int alf = (int) automaton.EdoNFA.at(i).get_Trans().size();
         if(automaton.EdoNFA.at(i).get_Trans().empty()){
             std::cout<<"SIN TRANCISION\n";
-            std::cout<<"Estado de aceptacion: "<<automaton.EdoNFA.at(i).is_EdoAcept()<<"\n";
+            std::cout<<"State de aceptacion: "<<automaton.EdoNFA.at(i).is_EdoAcept()<<"\n";
             std::cout<<"Token: "<<automaton.EdoNFA.at(i).get_Token()<<"\n";
         }else{
             for(int j=0; j<alf;j++){
                 std::cout<<"TRANSICIONES\n";
                 std::cout<<"De Q"<<automaton.EdoNFA[i].get_IdEstado()<<" --> Q"<<automaton.EdoNFA[i].get_Trans().at(j).get_EdoDestino()<<"\n";
                 std::cout<<"Caracter necesario: "<<automaton.EdoNFA.at(i).get_Trans().at(j).get_SimbInf()<<"\n";
-                std::cout<<"Estado de aceptacion: "<<automaton.EdoNFA.at(i).is_EdoAcept()<<"\n";
+                std::cout<<"State de aceptacion: "<<automaton.EdoNFA.at(i).is_EdoAcept()<<"\n";
                 std::cout<<"Token: "<<automaton.EdoNFA.at(i).get_Token()<<"\n";
             }//for
         }//if

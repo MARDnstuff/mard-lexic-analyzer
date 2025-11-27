@@ -1,8 +1,8 @@
 #ifndef CLASENFA_H
 #define CLASENFA_H
 #include <iostream>
-#include "ClaseEstado.h"
-#include "SimbolosEspeciales.h"
+#include "State.h"
+#include "SpecialSymbol.h"
 #include <vector>
 #include <stack>
 
@@ -23,13 +23,27 @@ class NFA {
 
     // TODO: Check these attributes if they should be private
     private:
+
+        // @brief State counter for unique state identifiers
         int counter;
+
+        // @brief Initial state of the NFA
         int initialState;
-        std::vector<Estado> states;
-        std::vector<Estado> acceptanceStates;
+
+        // @brief Set of states in the NFA
+        std::vector<State> states;
+
+        // @brief Set of acceptance states in the NFA
+        std::vector<State> acceptanceStates;
+
+        // @brief Alphabet of the NFA
         std::vector<char> alphabet;
+
+        // @brief Lexical union flag
         // TODO: Check if this attribute is necessary (I think it indicates if a special union has been added)
         bool SeAgregoNFAUnionLexico = false;
+
+        // @brief Unique identifier for the NFA
         int id;
 
     public:
@@ -88,14 +102,14 @@ class NFA {
          * @param state initial state from which to compute the epsilon closure
          * @return The set of states reachable from the given state via epsilon transitions
          */
-        std::vector<Estado> computeEpsilonClosure (Estado state);
+        std::vector<State> computeEpsilonClosure (State state);
 
         /**
          * @brief Computes the epsilon closure for a set of states
          * @param states Set of states from which to compute the epsilon closure
          * @return The set of states reachable from the given states via epsilon transitions
          */
-        std::vector<Estado> computeEpsilonClosure(std::vector<Estado> states);
+        std::vector<State> computeEpsilonClosure(std::vector<State> states);
 
         /**
          * @brief Computes the set of states reachable from a set of states via a given symbol
@@ -104,7 +118,7 @@ class NFA {
          * @return The set of states reachable from the given states via the specified symbol
          */
         //Regresa el cnjunto de estado a los que me puedo mover con el simbolo
-        std::vector<Estado> computeMove(std::vector<Estado> states,char symbol);
+        std::vector<State> computeMove(std::vector<State> states,char symbol);
 
         /**
          * @brief Computes the GOTO operation for the given set of states and input symbol.
@@ -118,7 +132,7 @@ class NFA {
          * @param symbol The input symbol triggering the transition.
          * @return A vector containing the resulting set of states.
          */
-        std::vector<Estado> computeGoto(std::vector<Estado> states,char symbol);
+        std::vector<State> computeGoto(std::vector<State> states,char symbol);
 
         /**
          * @brief Builds the special-union of this NFA with another NFA.
@@ -152,4 +166,4 @@ class NFA {
         virtual ~NFA();
 };
 
-#endif // CLASENFA_H
+#endif // NFA_H

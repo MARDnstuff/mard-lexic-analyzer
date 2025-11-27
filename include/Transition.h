@@ -101,14 +101,12 @@ class Transition {
          * @param sourceId The identifier of the source state
          * @return void
          */
-        // Establece el estado origen
         void setSourceStateId (int sourceId);
 
         /**
          * @brief Returns the source state identifier
          * @return The identifier of the source state
          */
-        // Regresa el estado origen
         int getSourceStateId ();
 
         /**
